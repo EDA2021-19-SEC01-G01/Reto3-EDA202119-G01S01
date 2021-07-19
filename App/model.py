@@ -28,6 +28,7 @@
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
@@ -38,13 +39,58 @@ los mismos.
 """
 
 # Construccion de modelos
+def newCatalog():
+    """ Inicializa el catálogo
+
+    Retorna el catálogo inicializado.
+    """
+    catalog = {'events': None,
+                'info': None}
+
+    catalog['events'] = lt.newList('ARRAY_LIST')
+    catalog['info'] = mp.newMap(11,maptype='PROBING',loadfactor=0.5)
+    mp.put(catalog['info'],'instrumentalness', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'liveness', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'speechiness', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'danceability', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'valence', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'loudness', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'tempo', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'acousticness', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'energy', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'mode', om.newMap(omaptype='RBT',comparefunction=compare))
+    mp.put(catalog['info'],'key', om.newMap(omaptype='RBT',comparefunction=compare))
+    
+    return catalog
 
 # Funciones para agregar informacion al catalogo
+def addEvent(catalog,event):
+    lt.addLast(catalog['events'],event)
+    criterios = mp.keySet(catalog['info'])
+    for index in range(1,lt.size(criterios)+1):
+        ordered = lt.getElement(criterios,index)
+        mapa = mp.get(catalog['info'],ordered)['value']
+        llave = float(event[ordered])
+        if om.contains(mapa,llave):
+            lt.addLast(om.get(mapa,llave)['value'],event)
+        else:
+            listaPerValue = lt.newList('ARRAY_LIST')
+            lt.addLast(listaPerValue,event)
+            om.put(mapa,llave,listaPerValue)
 
 # Funciones para creacion de datos
 
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
-
+def compare(cosa1, cosa2):
+    """
+    Compara dos cosas
+    """
+    if (cosa1 == cosa2):
+        return 0
+    elif (cosa1 > cosa2):
+        return 1
+    else:
+        return -1
 # Funciones de ordenamiento

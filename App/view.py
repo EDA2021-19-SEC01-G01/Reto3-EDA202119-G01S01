@@ -49,6 +49,12 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        catalog = controller.init()
+        catalog = controller.loadData(catalog,'context_content_features-small.csv')
+        tamano = lt.size(catalog['events'])
+        print(tamano)
+        print(lt.subList(catalog['events'],1,5))
+        print(lt.subList(catalog['events'],tamano-5,5))
 
     elif int(inputs[0]) == 2:
         pass
