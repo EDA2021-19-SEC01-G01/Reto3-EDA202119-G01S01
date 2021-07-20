@@ -37,7 +37,8 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Requerimiento 1")
+    print("0- Salir")
 
 catalog = None
 
@@ -57,7 +58,15 @@ while True:
         print(lt.subList(catalog['events'],tamano-5,5))
 
     elif int(inputs[0]) == 2:
-        pass
+        crit1 = input("Ingrese el criterio 1: ")
+        minimo1 = float(input("Ingrese el mínimo 1: "))
+        maximo1 = float(input("Ingrese el máximo 1: "))
+        crit2 = input("Ingrese el criterio 2: ")
+        minimo2 = float(input("Ingrese el mínimo 2: "))
+        maximo2 = float(input("Ingrese el máximo 2: "))
+        rta = controller.requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2)
+        print (f"Número de eventos dentro de ambos rangos: {rta[0]}")
+        print (f"Número de artistas con reproducciones dentro de ambos rangos: {rta[1]}")
 
     else:
         sys.exit(0)

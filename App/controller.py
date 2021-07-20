@@ -52,3 +52,6 @@ def loadData(catalog, dataFile):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+
+def requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2):
+    return model.requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2)

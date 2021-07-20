@@ -81,6 +81,31 @@ def addEvent(catalog,event):
 # Funciones para creacion de datos
 
 # Funciones de consulta
+def requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2):
+    group1 = om.values(mp.get(catalog['info'],crit1)['value'],minimo1,maximo1)
+    return interseccion(group1, crit2, minimo2, maximo2)
+    
+def interseccion(lista1,crit2,minimo2,maximo2):
+    """
+    Encuentra los eventos que cumplen con ambas condiciones
+    Retorna:
+    tamaño, número de artistas
+    
+    """
+    artists = lt.newList("ARRAY_LIST")
+    nEvents = 0
+    for repro in range(1,lt.size(lista1)+1):
+        recorriendo1 = lt.getElement(lista1,repro)
+        for each in range(1,lt.size(recorriendo1)+1):
+            recorriendo = lt.getElement(recorriendo1,each)
+            if float(recorriendo[crit2]) > minimo2 and float(recorriendo[crit2]) < maximo2:
+                nEvents += 1
+                artist = recorriendo["artist_id"]
+                if lt.isPresent(artists, artist) == 0:
+                    lt.addLast(artists,artist)
+
+    return (nEvents, lt.size(artists))
+
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compare(cosa1, cosa2):
