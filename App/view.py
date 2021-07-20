@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 assert cf
 
 
@@ -38,6 +39,9 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Requerimiento 1")
+    print("3- Requerimiento 2")
+    print("4- Requerimiento 3")
+    print("5- Requerimiento 4")
     print("0- Salir")
 
 catalog = None
@@ -53,9 +57,17 @@ while True:
         catalog = controller.init()
         catalog = controller.loadData(catalog,'context_content_features-small.csv')
         tamano = lt.size(catalog['events'])
-        print(tamano)
-        print(lt.subList(catalog['events'],1,5))
-        print(lt.subList(catalog['events'],tamano-5,5))
+        tamanoArt = mp.size(catalog["artistas"])
+        tamanoSongs = mp.size(catalog["songs"])
+        print(f"La cantidad de eventos cargados es: {tamano}")
+        print(f"La cantidad de artistas cargados es: {tamanoArt}")
+        print(f"La cantidad de canciones cargadas es: {tamanoSongs}")
+        parteIni = lt.subList(catalog['events'],1,5)
+        for i in range(1,6):
+            print(lt.getElement(parteIni,i))
+        parteEnd = lt.subList(catalog['events'],tamano-5,5)
+        for i in range(1,6):
+            print(lt.getElement(parteEnd,i))
 
     elif int(inputs[0]) == 2:
         crit1 = input("Ingrese el criterio 1: ")

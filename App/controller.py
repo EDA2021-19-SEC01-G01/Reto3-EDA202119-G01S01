@@ -21,6 +21,7 @@
  """
 
 import config as cf
+from DISClib.ADT import list as lt
 import model
 import csv
 
@@ -47,7 +48,7 @@ def loadData(catalog, dataFile):
     input_file = csv.DictReader(open(file, encoding="utf-8"),
                                 delimiter=",")
     for event in input_file:
-        model.addEvent(catalog, event)
+        model.addEvent(catalog,event)
     return catalog
 # Funciones de ordenamiento
 

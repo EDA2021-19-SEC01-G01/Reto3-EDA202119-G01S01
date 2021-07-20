@@ -49,6 +49,8 @@ def newCatalog():
 
     catalog['events'] = lt.newList('ARRAY_LIST')
     catalog['info'] = mp.newMap(11,maptype='PROBING',loadfactor=0.5)
+    catalog['artistas'] = mp.newMap(maptype='PROBING',loadfactor=0.5)
+    catalog['songs']= mp.newMap(maptype="PROBING",loadfactor=0.5)
     mp.put(catalog['info'],'instrumentalness', om.newMap(omaptype='RBT',comparefunction=compare))
     mp.put(catalog['info'],'liveness', om.newMap(omaptype='RBT',comparefunction=compare))
     mp.put(catalog['info'],'speechiness', om.newMap(omaptype='RBT',comparefunction=compare))
@@ -77,6 +79,21 @@ def addEvent(catalog,event):
             listaPerValue = lt.newList('ARRAY_LIST')
             lt.addLast(listaPerValue,event)
             om.put(mapa,llave,listaPerValue)
+    autor,song = event["artist_id"], event["track_id"]
+    if mp.contains(catalog["artistas"],autor):
+        lt.addLast(mp.get(catalog["artistas"],autor)["value"],event)
+    else:
+        listaCero = lt.newList("ARRAY_LIST")
+        lt.addLast(listaCero,event)
+        mp.put(catalog["artistas"],autor,listaCero)
+
+    if mp.contains(catalog["songs"],song):
+        lt.addLast(mp.get(catalog["songs"],song)["value"],event)
+    else:
+        listaCero = lt.newList("ARRAY_LIST")
+        lt.addLast(listaCero,event)
+        mp.put(catalog["songs"],song,listaCero)
+
 
 # Funciones para creacion de datos
 
