@@ -93,6 +93,34 @@ while True:
             idSong = mp.get(rtaSongs,lt.getElement(shuffledKeys,i))
             print (f"Track {i}: {idSong['key']} with Valence {idSong['value'][0]} and Tempo {idSong['value'][1]}")
 
+    elif int(inputs) == 5:
+        generos = input("Ingrese la lista de géneros separados por comas (sin espacios): ")
+        semaforo = int(input("Desea añadir un nuevo género a la búsqueda? (1- sí. 2- no) "))
+        genSearch = generos.split(",")
+        if semaforo == 1:
+            genre = input("Nombre del nuevo género: ")
+            tMin = float(input("Tempo mínimo: "))
+            tMax = float(input("Tempo máximo: "))
+            mp.put(catalog['genres'],genre,0)
+            mp.put(catalog['range'],genre,[tMin,tMax])
+            genSearch.append(genre)
+        resultado = controller.requerimiento4(catalog,genSearch,semaforo)
+        counter = 0
+        print("RESULTADOS REQUERIMIENTO 4: ")
+        print (f"La cantidad total de reproducciones/eventos es: {resultado[0]}")
+        for generooo in genSearch:
+            todosArt = mp.get(catalog['genArt'],generooo)['value']
+            nArtistas = lt.size(todosArt)
+            listaDiezArt = lt.subList(todosArt,1,10)
+            counter += 1
+            eachN = lt.getElement(resultado[1],counter)
+            print (f'Resultados búsqueda {generooo}: ')
+            print (f"La cantidad de reproducciones/eventos del género es: {eachN}")
+            print (f"La cantidad de artistas únicos es: {nArtistas}")
+            for numero in range(1,11):
+                gente = lt.getElement(listaDiezArt,numero)
+                print(f"Artista {numero}: {gente}")
+
     else:
         sys.exit(0)
 sys.exit(0)

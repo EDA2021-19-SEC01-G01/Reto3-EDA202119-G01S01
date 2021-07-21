@@ -59,3 +59,6 @@ def requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2):
 
 def requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2):
     return model.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
+
+def requerimiento4(catalog,genSearch,semaforo):
+    return model.requerimiento4(catalog,genSearch,semaforo)
