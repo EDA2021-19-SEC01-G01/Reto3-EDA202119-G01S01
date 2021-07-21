@@ -52,7 +52,7 @@ Menu principal
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
-    if int(inputs[0]) == 1:
+    if int(inputs) == 1:
         print("Cargando información de los archivos ....")
         catalog = controller.init()
         catalog = controller.loadData(catalog,'context_content_features-small.csv')
@@ -69,7 +69,7 @@ while True:
         for i in range(1,6):
             print(lt.getElement(parteEnd,i))
 
-    elif int(inputs[0]) == 2:
+    elif int(inputs) == 2:
         crit1 = input("Ingrese el criterio 1: ")
         minimo1 = float(input("Ingrese el mínimo 1: "))
         maximo1 = float(input("Ingrese el máximo 1: "))
@@ -79,6 +79,19 @@ while True:
         rta = controller.requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2)
         print (f"Número de eventos dentro de ambos rangos: {rta[0]}")
         print (f"Número de artistas con reproducciones dentro de ambos rangos: {rta[1]}")
+
+    elif int(inputs) == 4:
+        minimo1 = float(input("Ingrese el mínimo 1: "))
+        maximo1 = float(input("Ingrese el máximo 1: "))
+        minimo2 = float(input("Ingrese el mínimo 2: "))
+        maximo2 = float(input("Ingrese el máximo 2: "))
+        rtaSongs = controller.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
+        tamano = mp.size(rtaSongs)
+        print (f"El total de pistas únicas es: {tamano}")
+        shuffledKeys = mp.keySet(rtaSongs)
+        for i in range(1,9):
+            idSong = mp.get(rtaSongs,lt.getElement(shuffledKeys,i))
+            print (f"Track {i}: {idSong['key']} with Valence {idSong['value'][0]} and Tempo {idSong['value'][1]}")
 
     else:
         sys.exit(0)

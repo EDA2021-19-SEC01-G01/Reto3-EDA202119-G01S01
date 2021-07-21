@@ -31,6 +31,7 @@ from DISClib.ADT import map as mp
 from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from random import randint
 assert cf
 
 """
@@ -123,6 +124,27 @@ def interseccion(lista1,crit2,minimo2,maximo2):
 
     return (nEvents, lt.size(artists))
 
+def interseccion3(lista1,crit2,minimo2,maximo2):
+    """
+    Encuentra los eventos que cumplen con ambas condiciones
+    Retorna:
+    tamaño, número de artistas
+    
+    """
+    songs = mp.newMap(maptype="PROBING",loadfactor=0.5)
+    for repro in range(1,lt.size(lista1)+1):
+        recorriendo1 = lt.getElement(lista1,repro)
+        for each in range(1,lt.size(recorriendo1)+1):
+            recorriendo = lt.getElement(recorriendo1,each)
+            if float(recorriendo[crit2]) > minimo2 and float(recorriendo[crit2]) < maximo2:
+                song = recorriendo["track_id"]
+                if mp.contains(songs,song) == False:
+                    mp.put(songs,song,[recorriendo["valence"],recorriendo["tempo"]])
+    return songs
+
+def requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2):
+    valence = om.values(mp.get(catalog['info'],"valence")['value'],minimo1,maximo1)
+    return interseccion3(valence,"tempo",minimo2,maximo2)
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compare(cosa1, cosa2):
