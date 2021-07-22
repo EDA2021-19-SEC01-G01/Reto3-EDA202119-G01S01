@@ -190,11 +190,7 @@ def interseccion3(lista1,crit2,minimo2,maximo2):
 
 def requerimiento2 (catalog,minimo1,maximo1,minimo2,maximo2):
     liveness = om.values(mp.get(catalog['info'],"liveness")['value'],minimo1,maximo1)
-<<<<<<< HEAD
-    return interseccion2(liveness,"speechines",minimo2,maximo2)
-=======
     return interseccion2(liveness,"speechiness",minimo2,maximo2)
->>>>>>> 56bdd74102873dd40324f125aba8c87e61dd463d
 
 def requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2):
     valence = om.values(mp.get(catalog['info'],"valence")['value'],minimo1,maximo1)
