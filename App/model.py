@@ -31,7 +31,6 @@ from DISClib.ADT import map as mp
 from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
-from random import randint
 assert cf
 
 """
@@ -74,7 +73,7 @@ def newCatalog():
 def addEvent(catalog,event):
     lt.addLast(catalog['events'],event)
     criterios = mp.keySet(catalog['info'])
-    bpm = float(event['tempo'])
+    #bpm = float(event['tempo'])
     for index in range(1,lt.size(criterios)+1):
         ordered = lt.getElement(criterios,index)
         mapa = mp.get(catalog['info'],ordered)['value']
@@ -99,25 +98,35 @@ def addEvent(catalog,event):
         listaCero = lt.newList("ARRAY_LIST")
         lt.addLast(listaCero,event)
         mp.put(catalog["songs"],song,listaCero)
-    gens = mp.keySet(catalog['range'])
-    for cadaUno in range(1,lt.size(gens)+1):
-        name = lt.getElement(gens,cadaUno)
-        rang = mp.get(catalog['range'],name)['value']
-        mini,maxi = rang[0],rang[1]
-        if mini <= bpm <= maxi:
-            (mp.get(catalog["genres"],name)['value'])+=1
-            if lt.isPresent(mp.get(catalog['genArt'],name)['value'], autor) == 0:
-                lt.addLast(mp.get(catalog['genArt'],name)['value'],autor)
+    #gens = mp.keySet(catalog['range'])
+    #for cadaUno in range(1,lt.size(gens)+1):
+    #    name = lt.getElement(gens,cadaUno)
+    #    rang = mp.get(catalog['range'],name)['value']
+    #    mini,maxi = rang[0],rang[1]
+    #    if mini <= bpm <= maxi:
+    #        (mp.get(catalog["genres"],name)['value'])+=1
+    #        if lt.isPresent(mp.get(catalog['genArt'],name)['value'], autor) == 0:
+    #            lt.addLast(mp.get(catalog['genArt'],name)['value'],autor)
 
 def fillGenres(catalog):
     generos = ['Reggae','Down Tempo','Chill Out','Hip Hop','Jazz and Funk','Pop','R&B','Rock','Metal']
     rangos = [[60,90],[70,100],[90,120],[85,115],[120,125],[100,130],[60,80],[110,140],[100,160]]
     for i in range(len(generos)):
-        mp.put(catalog['genres'],generos[i],0)
+        #mp.put(catalog['genres'],generos[i],0)
         mp.put(catalog['range'],generos[i],rangos[i])
-        mp.put(catalog['genArt'],generos[i],lt.newList("ARRAY_LIST"))
+        mp.put(catalog['genArt'],generos[i],None)
 
 # Funciones para creacion de datos
+def arrangeByGenre(catalog):
+    gens = mp.keySet(catalog['range'])
+    for cadaUno in range(1,lt.size(gens)+1):
+        name = lt.getElement(gens,cadaUno)
+        rang = mp.get(catalog['range'],name)['value']
+        mini,maxi = rang[0],rang[1]
+        mp.get(catalog['genArt'],name)['value'] = om.values(mp.get(catalog['info'],'tempo')['value'],mini,maxi)
+    #        (mp.get(catalog["genres"],name)['value'])+=1
+    #        if lt.isPresent(mp.get(catalog['genArt'],name)['value'], autor) == 0:
+    #            lt.addLast(mp.get(catalog['genArt'],name)['value'],autor)
 
 # Funciones de consulta
 def requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2):
@@ -187,27 +196,31 @@ def requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2):
     valence = om.values(mp.get(catalog['info'],"valence")['value'],minimo1,maximo1)
     return interseccion3(valence,"tempo",minimo2,maximo2)
 
-def requerimiento4(catalog,genSearch,semaforo):
-    if semaforo == 1:
-        name2 = genSearch[-1]
-        rang = mp.get(catalog['range'],name2)['value']
-        mini,maxi = rang[0],rang[1]
-        for eventoN in range(1,lt.size(catalog['events'])+1):
-            evento = lt.getElement(catalog['events'],eventoN)
-            bpm = float(evento['tempo'])
-            autor = evento["artist_id"]
-            if mini <= bpm <= maxi:
-                (mp.get(catalog["genres"],name2)['value'])+=1
-                if lt.isPresent(mp.get(catalog['genArt'],name2)['value'],autor) == 0:
-                    lt.addLast(mp.get(catalog['genArt'],name2)['value'],autor)
+def requerimiento4(catalog,genSearch):
 
     totalRepro = 0
     rePerGen = lt.newList("ARRAY_LIST")
+    peoplePerGen = lt.newList("ARRAY_LIST")
+    nMenPerGen = lt.newList("ARRAY_LIST")
+
     for winnerGen in genSearch:
-        reproducciones = mp.get(catalog["genres"],winnerGen)['value']
-        lt.addLast(rePerGen,reproducciones)
-        totalRepro += reproducciones
-    return totalRepro,rePerGen
+        reproduccionesN = 0
+        reproducciones = mp.get(catalog["genArt"],winnerGen)['value']
+        autoresDeja = lt.newList("ARRAY_LIST")
+        for cadaUna in range(1,lt.size(reproducciones)+1):
+            listaGrande = lt.getElement(reproducciones,cadaUna)
+            for inside in range(1,lt.size(listaGrande)+1):
+                reproduccionesN += 1
+                man = lt.getElement(listaGrande,inside)['artist_id']
+                if lt.isPresent(autoresDeja,man) == 0:
+                    lt.addLast(autoresDeja,man)
+
+        lt.addLast(rePerGen,reproduccionesN)
+        totalRepro += reproduccionesN
+        lt.addLast(nMenPerGen,lt.size(autoresDeja))
+        lt.addLast(peoplePerGen,lt.subList(autoresDeja,1,10))
+
+    return totalRepro,rePerGen,nMenPerGen,peoplePerGen
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compare(cosa1, cosa2):
