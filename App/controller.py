@@ -49,6 +49,8 @@ def loadData(catalog, dataFile):
                                 delimiter=",")
     for event in input_file:
         model.addEvent(catalog,event)
+    model.arrangeByGenre(catalog)
+
     return catalog
 # Funciones de ordenamiento
 
@@ -63,5 +65,5 @@ def requerimiento2(catalog,minimo1,maximo1,minimo2,maximo2):
 def requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2):
     return model.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
 
-def requerimiento4(catalog,genSearch,semaforo):
-    return model.requerimiento4(catalog,genSearch,semaforo)
+def requerimiento4(catalog,genSearch):
+    return model.requerimiento4(catalog,genSearch)

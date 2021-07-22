@@ -25,6 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
 assert cf
 
 
@@ -85,7 +86,7 @@ while True:
         maximo1 = float(input("Ingrese el máximo 1 de Liveness: "))
         minimo2 = float(input("Ingrese el mínimo 2 de Speechiness: "))
         maximo2 = float(input("Ingrese el máximo 2 de Speechiness: "))
-        rtaSongs = controller.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
+        rtaSongs = controller.requerimiento2(catalog,minimo1,maximo1,minimo2,maximo2)
         tamano = mp.size(rtaSongs)
         print (f"El total de pistas únicas es: {tamano}")
         shuffledKeys = mp.keySet(rtaSongs)
@@ -94,10 +95,10 @@ while True:
             print (f"Track {i}: {idSong['key']} with Valence {idSong['value'][0]} and Tempo {idSong['value'][1]}")
 
     elif int(inputs) == 4:
-        minimo1 = float(input("Ingrese el mínimo 1: "))
-        maximo1 = float(input("Ingrese el máximo 1: "))
-        minimo2 = float(input("Ingrese el mínimo 2: "))
-        maximo2 = float(input("Ingrese el máximo 2: "))
+        minimo1 = float(input("Ingrese el mínimo de Valence: "))
+        maximo1 = float(input("Ingrese el máximo de Valence: "))
+        minimo2 = float(input("Ingrese el mínimo de Tempo: "))
+        maximo2 = float(input("Ingrese el máximo de Tempo: "))
         rtaSongs = controller.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
         tamano = mp.size(rtaSongs)
         print (f"El total de pistas únicas es: {tamano}")
@@ -114,19 +115,22 @@ while True:
             genre = input("Nombre del nuevo género: ")
             tMin = float(input("Tempo mínimo: "))
             tMax = float(input("Tempo máximo: "))
-            mp.put(catalog['genres'],genre,0)
-            mp.put(catalog['genArt'],genre,lt.newList("ARRAY_LIST"))
+            #mp.put(catalog['genres'],genre,0)
+            mp.put(catalog['genArt'],genre,None)
             mp.put(catalog['range'],genre,[tMin,tMax])
+            rang = mp.get(catalog['range'],genre)['value']
+            mini,maxi = rang[0],rang[1]
+            mp.get(catalog['genArt'],genre)['value'] = om.values(mp.get(catalog['info'],'tempo')['value'],mini,maxi)
             genSearch.append(genre)
-        resultado = controller.requerimiento4(catalog,genSearch,semaforo)
+        resultado = controller.requerimiento4(catalog,genSearch)
         counter = 0
         print("RESULTADOS REQUERIMIENTO 4: ")
         print (f"La cantidad total de reproducciones/eventos es: {resultado[0]}")
         for generooo in genSearch:
-            todosArt = mp.get(catalog['genArt'],generooo)['value']
-            nArtistas = lt.size(todosArt)
-            listaDiezArt = lt.subList(todosArt,1,10)
             counter += 1
+            todosArt = mp.get(catalog['genArt'],generooo)['value']
+            nArtistas = lt.getElement(resultado[2],counter)
+            listaDiezArt = lt.getElement(resultado[3],counter)
             eachN = lt.getElement(resultado[1],counter)
             print (f'Resultados búsqueda {generooo}: ')
             print (f"La cantidad de reproducciones/eventos del género es: {eachN}")
