@@ -115,6 +115,7 @@ while True:
             tMin = float(input("Tempo mínimo: "))
             tMax = float(input("Tempo máximo: "))
             mp.put(catalog['genres'],genre,0)
+            mp.put(catalog['genArt'],genre,lt.newList("ARRAY_LIST"))
             mp.put(catalog['range'],genre,[tMin,tMax])
             genSearch.append(genre)
         resultado = controller.requerimiento4(catalog,genSearch,semaforo)
