@@ -86,7 +86,7 @@ while True:
         maximo1 = float(input("Ingrese el máximo 1 de Liveness: "))
         minimo2 = float(input("Ingrese el mínimo 2 de Speechiness: "))
         maximo2 = float(input("Ingrese el máximo 2 de Speechiness: "))
-        rtaSongs = controller.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
+        rtaSongs = controller.requerimiento2(catalog,minimo1,maximo1,minimo2,maximo2)
         tamano = mp.size(rtaSongs)
         print (f"El total de pistas únicas es: {tamano}")
         shuffledKeys = mp.keySet(rtaSongs)
@@ -95,10 +95,10 @@ while True:
             print (f"Track {i}: {idSong['key']} with Valence {idSong['value'][0]} and Tempo {idSong['value'][1]}")
 
     elif int(inputs) == 4:
-        minimo1 = float(input("Ingrese el mínimo 1: "))
-        maximo1 = float(input("Ingrese el máximo 1: "))
-        minimo2 = float(input("Ingrese el mínimo 2: "))
-        maximo2 = float(input("Ingrese el máximo 2: "))
+        minimo1 = float(input("Ingrese el mínimo de Valence: "))
+        maximo1 = float(input("Ingrese el máximo de Valence: "))
+        minimo2 = float(input("Ingrese el mínimo de Tempo: "))
+        maximo2 = float(input("Ingrese el máximo de Tempo: "))
         rtaSongs = controller.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
         tamano = mp.size(rtaSongs)
         print (f"El total de pistas únicas es: {tamano}")
