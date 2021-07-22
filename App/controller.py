@@ -57,6 +57,9 @@ def loadData(catalog, dataFile):
 def requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2):
     return model.requerimiento1(catalog,crit1,minimo1,maximo1,crit2,minimo2,maximo2)
 
+def requerimiento2(catalog,minimo1,maximo1,minimo2,maximo2):
+    return model.requerimiento2(catalog,minimo1,maximo1,minimo2,maximo2)
+
 def requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2):
     return model.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
 

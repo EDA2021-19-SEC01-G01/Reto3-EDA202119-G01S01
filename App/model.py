@@ -48,7 +48,7 @@ def newCatalog():
     catalog = {'events': None,
                 'info': None}
 
-    catalog['events'] = lt.newList('ARRAY_LIST')
+     catalog['events'] = lt.newList('ARRAY_LIST')
     catalog['info'] = mp.newMap(11,maptype='PROBING',loadfactor=0.5)
     catalog['artistas'] = mp.newMap(maptype='PROBING',loadfactor=0.5)
     catalog['songs']= mp.newMap(maptype="PROBING",loadfactor=0.5)
@@ -144,7 +144,23 @@ def interseccion(lista1,crit2,minimo2,maximo2):
                     lt.addLast(artists,artist)
 
     return (nEvents, lt.size(artists))
-
+def interseccion2(lista1,crit2,minimo2,maximo2):
+    """
+    Encuentra los eventos que cumplen con ambas condiciones
+    Retorna:
+    tamaño, número de artistas
+    
+    """
+    songs = mp.newMap(maptype="PROBING",loadfactor=0.5)
+    for repro in range(1,lt.size(lista1)+1):
+        recorriendo1 = lt.getElement(lista1,repro)
+        for each in range(1,lt.size(recorriendo1)+1):
+            recorriendo = lt.getElement(recorriendo1,each)
+            if float(recorriendo[crit2]) > minimo2 and float(recorriendo[crit2]) < maximo2:
+                song = recorriendo["track_id"]
+                if mp.contains(songs,song) == False:
+                    mp.put(songs,song,[recorriendo["liveness"],recorriendo["speechiness"]])
+    return songs
 def interseccion3(lista1,crit2,minimo2,maximo2):
     """
     Encuentra los eventos que cumplen con ambas condiciones
@@ -162,6 +178,10 @@ def interseccion3(lista1,crit2,minimo2,maximo2):
                 if mp.contains(songs,song) == False:
                     mp.put(songs,song,[recorriendo["valence"],recorriendo["tempo"]])
     return songs
+
+def requerimiento2 (catalog,minimo1,maximo1,minimo2,maximo2):
+    liveness = om.values(mp.get(catalog['info'],"liveness")['value'],minimo1,maximo1)
+    return interseccion2
 
 def requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2):
     valence = om.values(mp.get(catalog['info'],"valence")['value'],minimo1,maximo1)

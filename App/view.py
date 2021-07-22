@@ -80,6 +80,19 @@ while True:
         print (f"Número de eventos dentro de ambos rangos: {rta[0]}")
         print (f"Número de artistas con reproducciones dentro de ambos rangos: {rta[1]}")
 
+    elif int(inputs) == 3:
+        minimo1 = float(input("Ingrese el mínimo 1 de Liveness: "))
+        maximo1 = float(input("Ingrese el máximo 1 de Liveness: "))
+        minimo2 = float(input("Ingrese el mínimo 2 de Speechiness: "))
+        maximo2 = float(input("Ingrese el máximo 2 de Speechiness: "))
+        rtaSongs = controller.requerimiento3(catalog,minimo1,maximo1,minimo2,maximo2)
+        tamano = mp.size(rtaSongs)
+        print (f"El total de pistas únicas es: {tamano}")
+        shuffledKeys = mp.keySet(rtaSongs)
+        for i in range(1,9):
+            idSong = mp.get(rtaSongs,lt.getElement(shuffledKeys,i))
+            print (f"Track {i}: {idSong['key']} with Valence {idSong['value'][0]} and Tempo {idSong['value'][1]}")
+
     elif int(inputs) == 4:
         minimo1 = float(input("Ingrese el mínimo 1: "))
         maximo1 = float(input("Ingrese el máximo 1: "))
