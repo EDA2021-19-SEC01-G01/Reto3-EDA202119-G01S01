@@ -48,7 +48,7 @@ def newCatalog():
     catalog = {'events': None,
                 'info': None}
 
-     catalog['events'] = lt.newList('ARRAY_LIST')
+    catalog['events'] = lt.newList('ARRAY_LIST')
     catalog['info'] = mp.newMap(11,maptype='PROBING',loadfactor=0.5)
     catalog['artistas'] = mp.newMap(maptype='PROBING',loadfactor=0.5)
     catalog['songs']= mp.newMap(maptype="PROBING",loadfactor=0.5)
